@@ -3,37 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>数独挑战 - 移动版</title>
+  <title>数独挑战</title>
   <!-- Tailwind CSS v3 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#4F46E5',
-            secondary: '#EC4899',
-            success: '#10B981',
-            danger: '#EF4444',
-            warning: '#F59E0B',
-            info: '#3B82F6',
-            light: '#F3F4F6',
-            dark: '#1F2937',
-            'primary-light': '#818CF8',
-            'primary-dark': '#3730A3',
+            primary: '#007AFF',
+            secondary: '#5856D6',
+            success: '#34C759',
+            danger: '#FF3B30',
+            warning: '#FF9500',
+            info: '#5AC8FA',
+            light: '#F2F2F7',
+            dark: '#2D3748',
+            'primary-light': '#4DA3FF',
+            'primary-dark': '#0056CC',
+            'secondary-light': '#8E8DFF',
+            'secondary-dark': '#3A38A8',
+            'dark-light': '#4A5568',
+            'light-dark': '#E5E5EA',
           },
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
+            sans: ['SF Pro Display', 'Inter', 'system-ui', 'sans-serif'],
           },
           boxShadow: {
             'inner-lg': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
             'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+            'card': '0 4px 12px rgba(0, 0, 0, 0.08)',
+            'card-hover': '0 8px 24px rgba(0, 0, 0, 0.12)',
+            'button': '0 2px 4px rgba(0, 0, 0, 0.1)',
+            'button-hover': '0 4px 8px rgba(0, 0, 0, 0.15)',
           },
           animation: {
             'pulse-light': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+            'fade-in': 'fadeIn 0.5s ease forwards',
+            'slide-in-up': 'slideInUp 0.5s ease forwards',
+            'scale-in': 'scaleIn 0.3s ease forwards',
           },
           keyframes: {
             shake: {
@@ -41,8 +52,25 @@
               '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
               '30%, 50%, 70%': { transform: 'translate3d(-3px, 0, 0)' },
               '40%, 60%': { transform: 'translate3d(3px, 0, 0)' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            slideInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            scaleIn: {
+              '0%': { opacity: '0', transform: 'scale(0.95)' },
+              '100%': { opacity: '1', transform: 'scale(1)' }
             }
-          }
+          },
+          borderRadius: {
+            'xl': '12px',
+            '2xl': '16px',
+            '3xl': '20px',
+          },
         }
       },
       darkMode: 'class',
@@ -51,37 +79,55 @@
   <style type="text/tailwindcss">
     @layer utilities {
       .cell-highlight {
-        @apply bg-primary-light/30;
+        @apply bg-primary-light/40 rounded-md border-2 border-primary/50 shadow-md;
       }
       .cell-same-number {
-        @apply bg-primary-light/20;
+        @apply bg-primary-light/20 rounded-md;
       }
       .cell-error {
-        @apply bg-danger/20 text-danger;
+        @apply bg-danger/20 text-danger rounded-md;
       }
       .cell-note {
         @apply text-[8px] sm:text-[10px] flex flex-wrap;
       }
       .glass-effect {
-        @apply bg-white/80 dark:bg-dark/80 backdrop-blur-md;
+        @apply bg-white/80 dark:bg-dark/80 backdrop-blur-md rounded-xl shadow-lg;
       }
       .cell-border-thick {
-        @apply border-2 border-dark dark:border-white;
+        @apply border border-gray-400 dark:border-gray-600;
       }
       .cell-border-right-thick {
-        @apply border-r-2 border-dark dark:border-white;
+        @apply border-r-2 border-gray-500 dark:border-gray-500;
       }
       .cell-border-bottom-thick {
-        @apply border-b-2 border-dark dark:border-white;
+        @apply border-b-2 border-gray-500 dark:border-gray-500;
       }
       .btn-3d {
-        @apply transform active:translate-y-1 active:shadow-inner transition-all duration-150;
+        @apply transform active:translate-y-1 active:shadow-inner transition-all duration-150 rounded-lg hover:shadow-md;
+      }
+      .btn-gradient {
+        @apply bg-gradient-to-br from-primary to-primary-dark text-white shadow-md hover:shadow-lg transition-all duration-300;
+      }
+      .btn-outline {
+        @apply border border-primary text-primary hover:bg-primary/10 transition-all duration-300;
+      }
+      .modal-animation {
+        @apply transition-all duration-300 ease-in-out transform scale-95 opacity-0;
+      }
+      .modal-animation.show {
+        @apply scale-100 opacity-100;
+      }
+      .grid-shadow {
+        @apply shadow-xl dark:shadow-2xl;
+      }
+      .cell-transition {
+        @apply transition-all duration-200 ease-in-out;
       }
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-indigo-950 min-h-screen font-sans text-dark dark:text-white" style="touch-action: manipulation;">
-  <div class="container mx-auto px-4 py-4 sm:py-6 max-w-md h-screen flex flex-col">
+<body class="bg-light dark:bg-dark min-h-screen font-sans text-dark dark:text-white" style="touch-action: manipulation;">
+  <div class="container mx-auto px-4 py-4 sm:py-6 max-w-md h-screen flex flex-col animate-fade-in">
     <!-- 顶部导航 -->
     <header class="flex justify-between items-center mb-3 flex-shrink-0">
       <button id="settingsBtn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
@@ -107,99 +153,100 @@
     </div>
 
     <!-- 数独网格 -->
-    <div id="sudokuGrid" class="relative w-full aspect-square mb-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex-shrink-0">
+    <div id="sudokuGrid" class="relative w-full aspect-square mb-4 bg-white dark:bg-dark-light rounded-xl shadow-card overflow-hidden flex-shrink-0 animate-scale-in border-2 border-gray-500 dark:border-gray-600">
       <!-- 数独格子将通过JS动态生成 -->
     </div>
 
     <!-- 功能按钮 -->
     <div class="grid grid-cols-4 gap-2 mb-4 flex-shrink-0">
-      <button id="notesBtn" class="glass-effect rounded-lg py-2 shadow-md btn-3d flex flex-col items-center justify-center">
-        <i class="fa fa-pencil text-base mb-0.5"></i>
-        <span class="text-xs">笔记</span>
+      <button id="notesBtn" class="bg-white dark:bg-dark-light rounded-lg py-2 shadow-button btn-3d flex flex-col items-center justify-center hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300">
+        <i class="fa fa-pencil text-base mb-0.5 text-primary"></i>
+        <span class="text-xs font-medium">笔记</span>
       </button>
-      <button id="hintBtn" class="glass-effect rounded-lg py-2 shadow-md btn-3d flex flex-col items-center justify-center">
-        <i class="fa fa-lightbulb-o text-base mb-0.5"></i>
-        <span class="text-xs">提示</span>
+      <button id="hintBtn" class="bg-white dark:bg-dark-light rounded-lg py-2 shadow-button btn-3d flex flex-col items-center justify-center hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300">
+        <i class="fa fa-lightbulb-o text-base mb-0.5 text-warning"></i>
+        <span class="text-xs font-medium">提示</span>
       </button>
-      <button id="eraseBtn" class="glass-effect rounded-lg py-2 shadow-md btn-3d flex flex-col items-center justify-center">
-        <i class="fa fa-eraser text-base mb-0.5"></i>
-        <span class="text-xs">擦除</span>
+      <button id="eraseBtn" class="bg-white dark:bg-dark-light rounded-lg py-2 shadow-button btn-3d flex flex-col items-center justify-center hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300">
+        <i class="fa fa-eraser text-base mb-0.5 text-danger"></i>
+        <span class="text-xs font-medium">擦除</span>
       </button>
-      <button id="newGameBtn" class="glass-effect rounded-lg py-2 shadow-md btn-3d flex flex-col items-center justify-center">
-        <i class="fa fa-refresh text-base mb-0.5"></i>
-        <span class="text-xs">新游戏</span>
+      <button id="newGameBtn" class="bg-white dark:bg-dark-light rounded-lg py-2 shadow-button btn-3d flex flex-col items-center justify-center hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300">
+        <i class="fa fa-refresh text-base mb-0.5 text-success"></i>
+        <span class="text-xs font-medium">新游戏</span>
       </button>
     </div>
 
     <!-- 数字键盘 -->
     <div class="grid grid-cols-5 gap-2 flex-shrink-0">
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="1">1</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="2">2</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="3">3</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="4">4</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="5">5</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="6">6</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="7">7</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="8">8</button>
-      <button class="number-btn glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center text-lg font-bold" data-number="9">9</button>
-      <button id="deleteBtn" class="glass-effect rounded-lg aspect-square shadow-md btn-3d flex items-center justify-center">
-        <i class="fa fa-backspace text-lg"></i>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="1">1</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="2">2</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="3">3</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="4">4</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="5">5</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="6">6</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="7">7</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="8">8</button>
+      <button class="number-btn bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center text-lg font-bold hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300" data-number="9">9</button>
+      <button id="deleteBtn" class="bg-white dark:bg-dark-light rounded-lg aspect-square shadow-button btn-3d flex items-center justify-center hover:bg-light-dark dark:hover:bg-gray-600 transition-all duration-300">
+        <i class="fa fa-backspace text-lg text-danger"></i>
       </button>
     </div>
   </div>
 
   <!-- 难度选择模态框 -->
-  <div id="difficultyModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-5/6 max-w-sm shadow-glass">
+  <div id="difficultyModal" class="fixed inset-0 bg-black/30 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+    <div class="bg-white dark:bg-dark-light rounded-2xl p-6 w-5/6 max-w-sm shadow-card modal-animation">
       <h2 class="text-xl font-bold mb-4 text-center">选择难度</h2>
       <div class="grid grid-cols-2 gap-4">
-        <button class="difficulty-option py-3 px-4 rounded-lg bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 font-medium" data-difficulty="easy">
+        <button class="difficulty-option py-3 px-4 rounded-lg bg-success/10 dark:bg-success/20 text-success dark:text-success-light font-medium hover:bg-success/20 dark:hover:bg-success/30 transition-all duration-300" data-difficulty="easy">
           简单
         </button>
-        <button class="difficulty-option py-3 px-4 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-medium" data-difficulty="medium">
+        <button class="difficulty-option py-3 px-4 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-light font-medium hover:bg-primary/20 dark:hover:bg-primary/30 transition-all duration-300" data-difficulty="medium">
           中等
         </button>
-        <button class="difficulty-option py-3 px-4 rounded-lg bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 font-medium" data-difficulty="hard">
+        <button class="difficulty-option py-3 px-4 rounded-lg bg-warning/10 dark:bg-warning/20 text-warning dark:text-warning-light font-medium hover:bg-warning/20 dark:hover:bg-warning/30 transition-all duration-300" data-difficulty="hard">
           困难
         </button>
-        <button class="difficulty-option py-3 px-4 rounded-lg bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 font-medium" data-difficulty="expert">
+        <button class="difficulty-option py-3 px-4 rounded-lg bg-danger/10 dark:bg-danger/20 text-danger dark:text-danger-light font-medium hover:bg-danger/20 dark:hover:bg-danger/30 transition-all duration-300" data-difficulty="expert">
           专家
         </button>
       </div>
-      <button id="closeDifficultyModal" class="mt-6 w-full py-3 rounded-lg bg-gray-200 dark:bg-gray-700 font-medium">
+      <button id="closeDifficultyModal" class="mt-6 w-full py-3 rounded-lg bg-light-dark dark:bg-dark hover:bg-light-dark/80 dark:hover:bg-dark-light transition-all duration-300 font-medium">
         取消
       </button>
     </div>
   </div>
 
   <!-- 游戏完成模态框 -->
-  <div id="gameCompleteModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-5/6 max-w-sm shadow-glass">
+  <div id="gameCompleteModal" class="fixed inset-0 bg-black/30 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+    <div class="bg-white dark:bg-dark-light rounded-2xl p-6 w-5/6 max-w-sm shadow-card modal-animation">
       <div class="text-center mb-4">
-        <div class="inline-block p-4 rounded-full bg-green-100 dark:bg-green-900 mb-4">
-          <i class="fa fa-trophy text-4xl text-yellow-500"></i>
+        <div class="inline-block p-4 rounded-full bg-success/10 dark:bg-success/20 mb-4">
+          <i class="fa fa-trophy text-4xl text-warning"></i>
         </div>
-        <h2 class="text-2xl font-bold">恭喜完成!</h2>
+        <h2 class="text-2xl font-bold mb-2">恭喜完成！</h2>
+        <p class="text-gray-600 dark:text-gray-400">你成功解决了这个数独谜题</p>
       </div>
-      <div class="mb-6">
-        <div class="flex justify-between mb-2">
-          <span class="text-gray-600 dark:text-gray-400">难度:</span>
+      <div class="space-y-3 mb-6">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 dark:text-gray-400">难度：</span>
           <span id="completeDifficulty" class="font-medium">中等</span>
         </div>
-        <div class="flex justify-between mb-2">
-          <span class="text-gray-600 dark:text-gray-400">用时:</span>
-          <span id="completeTime" class="font-medium">05:32</span>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 dark:text-gray-400">用时：</span>
+          <span id="completeTime" class="font-medium">00:00</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-600 dark:text-gray-400">提示使用:</span>
-          <span id="completeHints" class="font-medium">2次</span>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 dark:text-gray-400">提示：</span>
+          <span id="completeHints" class="font-medium">0次</span>
         </div>
       </div>
       <div class="grid grid-cols-2 gap-4">
-        <button id="continueBtn" class="py-3 rounded-lg bg-gray-200 dark:bg-gray-700 font-medium">
+        <button id="continueBtn" class="py-3 rounded-lg bg-light-dark dark:bg-dark hover:bg-light-dark/80 dark:hover:bg-dark-light transition-all duration-300 font-medium">
           继续
         </button>
-        <button id="newGameAfterCompleteBtn" class="py-3 rounded-lg bg-primary text-white font-medium">
+        <button id="newGameAfterCompleteBtn" class="py-3 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-all duration-300 shadow-button">
           新游戏
         </button>
       </div>
@@ -263,7 +310,11 @@
 
     // 创建数独网格
     function createSudokuGrid() {
-      sudokuGrid.innerHTML = '';
+      // 彻底清空sudokuGrid的内容，确保所有事件监听器被移除
+      while (sudokuGrid.firstChild) {
+        sudokuGrid.removeChild(sudokuGrid.firstChild);
+      }
+      
       for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
           const cell = document.createElement('div');
@@ -272,13 +323,12 @@
             'flex',
             'items-center',
             'justify-center',
-            'transition-colors',
-            'duration-200',
             'select-none',
             'cursor-pointer',
             'border',
-            'border-gray-300',
-            'dark:border-gray-700'
+            'border-gray-200',
+            'dark:border-gray-700',
+            'cell-transition'
           );
           // 添加触摸操作优化
           cell.style.touchAction = 'manipulation';
@@ -297,10 +347,22 @@
           cell.dataset.row = row;
           cell.dataset.col = col;
           
-          // 添加点击事件
-          cell.addEventListener('click', () => selectCell(row, col));
-          // 添加触摸事件支持
-          cell.addEventListener('touchstart', () => selectCell(row, col), { passive: true });
+          // 点击事件和触摸事件处理
+          // 使用IIFE创建闭包，捕获当前的row和col值
+          (function(r, c) {
+            function handleCellSelect(e) {
+              // 阻止事件冒泡和默认行为
+              e.stopPropagation();
+              if (e.type === 'touchstart') {
+                e.preventDefault();
+              }
+              selectCell(r, c);
+            }
+            
+            // 只添加一次事件监听器
+            cell.addEventListener('click', handleCellSelect);
+            cell.addEventListener('touchstart', handleCellSelect, { passive: false });
+          })(row, col);
           
           sudokuGrid.appendChild(cell);
         }
@@ -317,10 +379,11 @@
           enterNumber(number);
         });
         // 触摸事件支持
-        btn.addEventListener('touchstart', () => {
+        btn.addEventListener('touchstart', (e) => {
+          e.preventDefault();
           const number = parseInt(btn.dataset.number);
           enterNumber(number);
-        }, { passive: true });
+        }, { passive: false });
       });
 
       // 功能按钮
@@ -332,11 +395,26 @@
       deleteBtn.addEventListener('click', eraseCell);
       
       // 触摸事件支持
-      notesBtn.addEventListener('touchstart', toggleNotesMode, { passive: true });
-      hintBtn.addEventListener('touchstart', getHint, { passive: true });
-      eraseBtn.addEventListener('touchstart', eraseCell, { passive: true });
-      newGameBtn.addEventListener('touchstart', showDifficultyModal, { passive: true });
-      deleteBtn.addEventListener('touchstart', eraseCell, { passive: true });
+      notesBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        toggleNotesMode();
+      }, { passive: false });
+      hintBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        getHint();
+      }, { passive: false });
+      eraseBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        eraseCell();
+      }, { passive: false });
+      newGameBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        showDifficultyModal();
+      }, { passive: false });
+      deleteBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        eraseCell();
+      }, { passive: false });
 
       // 难度模态框
       difficultyOptions.forEach(option => {
@@ -347,16 +425,20 @@
           hideDifficultyModal();
         });
         // 触摸事件支持
-        option.addEventListener('touchstart', () => {
+        option.addEventListener('touchstart', (e) => {
+          e.preventDefault();
           const difficulty = option.dataset.difficulty;
           startNewGame(difficulty);
           hideDifficultyModal();
-        }, { passive: true });
+        }, { passive: false });
       });
       // 点击事件
       closeDifficultyModal.addEventListener('click', hideDifficultyModal);
       // 触摸事件支持
-      closeDifficultyModal.addEventListener('touchstart', hideDifficultyModal, { passive: true });
+      closeDifficultyModal.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        hideDifficultyModal();
+      }, { passive: false });
 
       // 游戏完成模态框
       // 点击事件
@@ -366,23 +448,33 @@
         showDifficultyModal();
       });
       // 触摸事件支持
-      continueBtn.addEventListener('touchstart', hideGameCompleteModal, { passive: true });
-      newGameAfterCompleteBtn.addEventListener('touchstart', () => {
+      continueBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        hideGameCompleteModal();
+      }, { passive: false });
+      newGameAfterCompleteBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
         hideGameCompleteModal();
         showDifficultyModal();
-      }, { passive: true });
+      }, { passive: false });
 
       // 主题切换
       // 点击事件
       themeToggleBtn.addEventListener('click', toggleTheme);
       // 触摸事件支持
-      themeToggleBtn.addEventListener('touchstart', toggleTheme, { passive: true });
+      themeToggleBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        toggleTheme();
+      }, { passive: false });
 
       // 设置按钮
       // 点击事件
       settingsBtn.addEventListener('click', showDifficultyModal);
       // 触摸事件支持
-      settingsBtn.addEventListener('touchstart', showDifficultyModal, { passive: true });
+      settingsBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        showDifficultyModal();
+      }, { passive: false });
 
       // 键盘事件
       document.addEventListener('keydown', handleKeyPress);
@@ -460,15 +552,24 @@
     // 显示难度选择模态框
     function showDifficultyModal() {
       difficultyModal.classList.remove('hidden');
+      // 添加动画效果
+      setTimeout(() => {
+        difficultyModal.querySelector('.modal-animation').classList.add('show');
+      }, 10);
       pauseTimer();
     }
 
     // 隐藏难度选择模态框
     function hideDifficultyModal() {
-      difficultyModal.classList.add('hidden');
-      if (!gameState.isComplete) {
-        startTimer();
-      }
+      // 移除动画效果
+      difficultyModal.querySelector('.modal-animation').classList.remove('show');
+      // 延迟隐藏，等待动画完成
+      setTimeout(() => {
+        difficultyModal.classList.add('hidden');
+        if (!gameState.isComplete) {
+          startTimer();
+        }
+      }, 300);
     }
 
     // 显示游戏完成模态框
@@ -477,12 +578,21 @@
       completeTime.textContent = formatTime(gameState.elapsedTime);
       completeHints.textContent = `${gameState.hintsUsed}次`;
       gameCompleteModal.classList.remove('hidden');
+      // 添加动画效果
+      setTimeout(() => {
+        gameCompleteModal.querySelector('.modal-animation').classList.add('show');
+      }, 10);
       pauseTimer();
     }
 
     // 隐藏游戏完成模态框
     function hideGameCompleteModal() {
-      gameCompleteModal.classList.add('hidden');
+      // 移除动画效果
+      gameCompleteModal.querySelector('.modal-animation').classList.remove('show');
+      // 延迟隐藏，等待动画完成
+      setTimeout(() => {
+        gameCompleteModal.classList.add('hidden');
+      }, 300);
     }
 
     // 获取难度文本
@@ -667,10 +777,10 @@
             
             if (gameState.original[row][col]) {
               // 原始数字
-              numberSpan.classList.add('font-bold', 'text-gray-800', 'dark:text-gray-200');
+              numberSpan.classList.add('font-bold', 'text-gray-800', 'dark:text-gray-200', 'text-lg', 'shadow-sm');
             } else {
               // 用户输入的数字
-              numberSpan.classList.add('text-primary', 'font-medium');
+              numberSpan.classList.add('text-primary', 'font-medium', 'text-lg', 'dark:text-primary-light', 'shadow-sm');
             }
             
             cell.appendChild(numberSpan);
@@ -703,12 +813,16 @@
 
     // 获取单元格元素
     function getCellElement(row, col) {
-      return document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+      // 只在sudokuGrid内部查找，避免受到其他元素的影响
+      return sudokuGrid.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     }
 
     // 选择单元格
     function selectCell(row, col) {
       if (gameState.isComplete) return;
+      
+      // 确保row和col在有效范围内
+      if (row < 0 || row >= 9 || col < 0 || col >= 9) return;
       
       gameState.selectedCell = [row, col];
       updateHighlights();
@@ -717,12 +831,10 @@
     // 更新高亮显示
     function updateHighlights() {
       // 清除所有高亮
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          const cell = getCellElement(r, c);
-          cell.classList.remove('cell-highlight', 'cell-same-number');
-        }
-      }
+      const allCells = sudokuGrid.querySelectorAll('[data-row][data-col]');
+      allCells.forEach(cell => {
+        cell.classList.remove('cell-highlight', 'cell-same-number', 'opacity-50');
+      });
       
       if (!gameState.selectedCell) return;
       
@@ -731,12 +843,20 @@
       
       // 高亮选中的单元格
       const selectedCell = getCellElement(row, col);
-      selectedCell.classList.add('cell-highlight');
+      if (selectedCell) {
+        selectedCell.classList.add('cell-highlight');
+      }
       
       // 高亮同一行和同一列
       for (let i = 0; i < 9; i++) {
-        if (i !== col) getCellElement(row, i).classList.add('cell-highlight', 'opacity-50');
-        if (i !== row) getCellElement(i, col).classList.add('cell-highlight', 'opacity-50');
+        if (i !== col) {
+          const rowCell = getCellElement(row, i);
+          if (rowCell) rowCell.classList.add('cell-highlight', 'opacity-50');
+        }
+        if (i !== row) {
+          const colCell = getCellElement(i, col);
+          if (colCell) colCell.classList.add('cell-highlight', 'opacity-50');
+        }
       }
       
       // 高亮同一个3x3方格
@@ -748,8 +868,9 @@
           const currentRow = boxRow + r;
           const currentCol = boxCol + c;
           
-          if (currentRow !== row || currentCol !== col) {
-            getCellElement(currentRow, currentCol).classList.add('cell-highlight', 'opacity-50');
+          if ((currentRow !== row || currentCol !== col) && currentRow >= 0 && currentRow < 9 && currentCol >= 0 && currentCol < 9) {
+            const boxCell = getCellElement(currentRow, currentCol);
+            if (boxCell) boxCell.classList.add('cell-highlight', 'opacity-50');
           }
         }
       }
@@ -759,7 +880,8 @@
         for (let r = 0; r < 9; r++) {
           for (let c = 0; c < 9; c++) {
             if ((r !== row || c !== col) && gameState.board[r][c] === selectedValue) {
-              getCellElement(r, c).classList.add('cell-same-number');
+              const sameNumCell = getCellElement(r, c);
+              if (sameNumCell) sameNumCell.classList.add('cell-same-number');
             }
           }
         }
